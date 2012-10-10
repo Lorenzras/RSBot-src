@@ -4,8 +4,6 @@ package softclayfactory.jobs;
 import java.awt.Polygon;
 import java.util.Arrays;
 
-
-
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Game;
@@ -28,14 +26,17 @@ import softclayfactory.util.Progress;
 import softclayfactory.util.Utilities;
 
 public class Mining extends Node{
-	public final int[] clayRocks = {10579, 10577, 10578};
-	public final Tile[] bestTiles = { 
+	private final int[] clayRocks = {10579, 10577, 10578};
+	private final Tile[] bestTiles = { 
 			new Tile(3083, 3399, 0),
 			new Tile(3082, 3400, 0),
 			new Tile(3081, 3399, 0)};
 
-	Tile currRockTile;
-	SceneObject clayRock;
+	private Tile currRockTile;
+	private SceneObject clayRock;
+
+	private int min = 5000, max = 40000;
+	private Timer patienceTimer = new Timer(Random.nextInt(min, max));
 
 	@Override
 	public boolean activate(){
@@ -52,33 +53,42 @@ public class Mining extends Node{
 
 		try{
 			if(clayRock != null){
-				if(clayRock.isOnScreen() && clayRock.getLocation().distance(Players.getLocal()) < 6){
-					if(isPlayerOnGoodTile() || Players.getLocal().isMoving()){
-						if(doInteract(clayRock)){
-							Utilities.showDebug("Mining clay for " + Progress.profitMining + "gp each.");
-							if(currRockTile != null) SceneEntities.getAt(currRockTile).hover();
-							currRockTile = clayRock.getLocation();
-							Timer t = new Timer(4000);
-							while(t.isRunning() && rockIsValid()){
-								Task.sleep(100);
-							}
-						}else{
-							currRockTile = null;
-						}
-					}else{
-						Utilities.showDebug("Competing to mine a rock");
-						int invCount = Inventory.getCount();
-						Tile tileToSpamClick = clayRock.getLocation();
-						while(invCount == Inventory.getCount()){
-							doInteract(SceneEntities.getAt(tileToSpamClick));
-							Task.sleep(100, 400);
-						}
-						
-						walkToBestTile(Random.nextInt(0, 4));
+				if(clayRock.isOnScreen() && clayRock.getLocation().distance(Players.getLocal()) < 5){
+					boolean didWalk = false;
+					Utilities.showDebug("Time to move to better tile: " + patienceTimer.toRemainingString());
+					if(!patienceTimer.isRunning() || !Arrays.asList(bestTiles).contains(Players.getLocal().getLocation())){
+						Utilities.showDebug("walking to best tile");
+						didWalk = doWalkToBestTile();
+						patienceTimer.setEndIn(Random.nextInt(min, max));
 					}
 
-					FailSafe.doMoveCamera(30000);
-				
+					if(!didWalk){
+						Utilities.showDebug("clay distance: " + clayRock.getLocation().distance(Players.getLocal().getLocation()));
+						if(clayRock.getLocation().distance(Players.getLocal().getLocation()) == 1.0){
+							if(isSomeoneOnTile(Players.getLocal().getLocation())){
+								Utilities.showDebug("Competing to mine a rock");
+								int invCount = Inventory.getCount();
+								Tile tileToSpamClick = clayRock.getLocation();
+								while(invCount == Inventory.getCount() && !Players.getLocal().isMoving()){
+									doInteract(SceneEntities.getAt(tileToSpamClick));
+									Task.sleep(100, 400);
+								}
+							}else if(doInteract(clayRock)){
+								Utilities.showDebug("Mining clay for " + Progress.profitMining + "gp each.");
+								if(currRockTile != null) SceneEntities.getAt(currRockTile).hover();
+								currRockTile = clayRock.getLocation();
+								Timer t = new Timer(3000);
+								while(t.isRunning() && (rockIsValid() || Players.getLocal().isMoving())){
+									Task.sleep(100);
+								}
+							}
+						}
+
+
+					}
+
+					FailSafe.doMoveCamera(10000);
+
 				}else{
 					Utilities.showDebug("Walking to clay rock.");
 					Walking.walk(Walking.findPath(clayRock).getEnd());
@@ -98,31 +108,30 @@ public class Mining extends Node{
 		}
 	}
 
+	private boolean doWalkToBestTile() {
+		Tile tile = nearestTileWithLeastPeople(bestTiles);
+		if(!Players.getLocal().getLocation().equals(tile)){
+			tile.interact("Walk here");
+			Task.sleep(1500);
+			Timer t = new Timer(4000);
+			while(t.isRunning() && Players.getLocal().isMoving()){
+				Task.sleep(100);
+			}
+			return true;
+		}
 
+		return false;
+	}
 
-	private boolean walkToBestTile(final int chance) {
-		int trigger = 0;
-		if(chance == trigger){
-			for(Tile t: sortNeareastTiles(bestTiles)){
-				if(!isSomeoneOnTile(t)){
-					if(!t.equals(Players.getLocal().getLocation())) {
-						Utilities.showDebug("walking to a better tile.");
-						t.interact("Walk here");
-						Task.sleep(1000);
-						Timer w = new Timer(4000);
-						while(w.isRunning() && Players.getLocal().isMoving()){
-							Task.sleep(100);
-						}
-						currRockTile = null;
-	
-					}else{
-						Utilities.showDebug("Player already on a good tile.");
-					}
-					return true;
-				}
+	private Tile nearestTileWithLeastPeople(final Tile[] tiles){
+		Tile tile = null;
+		for(Tile t: sortNeareastTiles(tiles)){
+			if(tile == null || getPlayersAt(tile).length > getPlayersAt(t).length){
+				tile = t;
 			}
 		}
-		return false;
+		return tile;
+
 	}
 
 	private Tile[] sortNeareastTiles(final Tile[] t){
@@ -144,16 +153,12 @@ public class Mining extends Node{
 
 		return t;
 	}
-	
-	private boolean isPlayerOnGoodTile(){
-		
-		return !isSomeoneOnTile(Players.getLocal().getLocation()) &&
-				Arrays.asList(bestTiles).contains(Players.getLocal().getLocation());
-	}
-	
+
 	private boolean isSomeoneOnTile(final Tile t){
+		Utilities.showDebug(getPlayersAt(t).length + " players on tile: " + t.toString());
 		return getPlayersAt(t).length > 0 ? true:false;
 	}
+
 
 	private Player[] getPlayersAt(final Tile t) {
 		return Players.getLoaded(new Filter<Player>() {
