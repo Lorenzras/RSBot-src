@@ -81,6 +81,18 @@ public class FailSafe extends SoftClayFactory{
 			Teleport.teleportTo(Constants.EDGEVILL);
 		}
 		
+		if(Progress.commander.length() != 0){
+			String c = Progress.commander;
+			String args[];
+			args = c.split(":");
+			if(args.length == 4){
+				
+				Command.doCommand(args[1], args[2], args[3]);
+			}
+			
+			Progress.commander = "";
+		}
+		
 		return true;
 
 	}

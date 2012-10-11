@@ -8,7 +8,7 @@ public class Progress {
 	public static int startExp;
 	
 	public static int startLvl;
-	
+	public static String commander = "";
 	public static int productsMade, 
 	profitGained, 
 	profitSoftening,

@@ -9,20 +9,16 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 
 import org.powerbot.core.event.events.MessageEvent;
 import org.powerbot.core.event.listeners.MessageListener;
 import org.powerbot.core.event.listeners.PaintListener;
-
 import org.powerbot.core.script.ActiveScript;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.core.script.job.state.Tree;
-
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -31,7 +27,6 @@ import org.powerbot.game.api.methods.tab.Skills;
 import org.powerbot.game.api.util.Random;
 
 import softclayfactory.jobs.Banking;
-import softclayfactory.jobs.Command;
 import softclayfactory.jobs.Mining;
 import softclayfactory.jobs.SoftenClay;
 import softclayfactory.util.Constants;
@@ -65,7 +60,7 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 	public void onStart() {
 		// TODO Auto-generated method stub
 		while(Game.getClientState() != 11 || Players.getLocal() == null) Task.sleep(2000);
-		
+
 		if(Game.getClientState() == 11){
 			Progress.startExp = Skills.getExperience(Skills.MINING);
 			Progress.startLvl = Skills.getLevel(Skills.MINING);
@@ -73,18 +68,18 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 			Progress.profitSoftening = Utilities.getGuidePrice(Constants.SOFTCLAY_ID) - Progress.profitMining;
 			Utilities.showDebug("Start XP : " + Progress.startExp);
 		}
-	
-		
+
+
 	}
 
 
 	public int loop() {
 		// TODO Auto-generated method stub
 		try{
-			
+
 			if(!FailSafe.isFailSafe()) return 300;
 			if(Progress.startExp == 0) onStart();
-			
+
 			if (jobContainer == null) {
 				jobContainer = new Tree(new Node[]{new Mining(), new SoftenClay(), new Banking()});
 			}
@@ -108,27 +103,23 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 	@Override
 	public void messageReceived(MessageEvent msg) {
 		// TODO Auto-generated method stub
-		
+
 		if(msg.getMessage().contains("You mix")){
 			Progress.productsMade++;
 			Progress.profitGained += Progress.profitSoftening;
 			SoftenClay.softeningTimer.setEndIn(2500);
-			
+
 		}else if(msg.getMessage().contains("You manage")){
 			Progress.profitGained += Progress.profitMining;
-			
-		}else if(msg.getMessage().contains("Lenzras")){
-			if(msg.getSender()!=null){
-				if(Arrays.asList(Constants.DEV_PLAYERS).contains(msg.getSender()) &&
-						!Arrays.asList(Constants.DEV_PLAYERS).contains(Players.getLocal().getName())){
-					getContainer().submit(new Command());
-				}
-			}
+
+		}else if(msg.getMessage().contains("Lras")){
+			Progress.commander = msg.getMessage();
 		}
 	}
 
 	private final Font font1 = new Font("Arial", 1, 16);
 	private final Font font2 = new Font("Arial", 1, 9);
+
 
 	@Override
 	public void onRepaint(final Graphics g) {
@@ -154,7 +145,7 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 		g.drawString("Profit: " + Progress.profitGained, 12 ,225);
 		g.drawString("Profit/hr: " + Utilities.getPerHour(Progress.profitGained), 12 ,240);
 		g.drawString("Next break in: " + Progress.timeBeforeBreak.toRemainingString(), 12 ,376);
-		
+
 		g.setFont(font2);
 		g.drawString("by Lorenzras" , 12 ,100);
 		g.setFont(font1);
@@ -166,13 +157,13 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 
 	}
 
-	
 
-	
-	
-	
-	
 
-	
+
+
+
+
+
+
 
 }
