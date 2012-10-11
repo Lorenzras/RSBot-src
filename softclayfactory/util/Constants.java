@@ -4,7 +4,7 @@ import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
 
 public class Constants {
-	public final static double VERSION = 3.312;
+	public final static double VERSION = 3.313;
 	
 	public  final static int EDGEVILL = 45;
 	public final static int BOOTH_ID = 42377;
