@@ -11,6 +11,7 @@ public class Constants {
 	public final static int WELL_ID = 26945;
 	public final static int CLAY_ID = 434;
 	public final static int SOFTCLAY_ID = 1761;
+	
 	public final static  int[] pickAxes = {1275, 1267, 1269, 1273, 1271};
 	
 	public final int[] clayRocks = {10579, 10577, 10578};

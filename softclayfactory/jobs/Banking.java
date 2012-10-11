@@ -70,20 +70,12 @@ public class Banking extends Node {
 		}
 	}
 
-	private boolean  depositAllExcept(int[] item_Ids){
+	private boolean  depositAllExcept(final int[] item_Ids){
 		boolean isDepositedItem = false;
 		Timer depositWait = new Timer(1500);
-		boolean isDeposit;
 		for(Item i: Inventory.getItems()){
-
-			isDeposit = true;
-			if(Inventory.getCount(i.getId()) > 0){
-				for(int x: item_Ids){
-					if(x == i.getId()) isDeposit = false;
-					break;
-				}
-
-				if(isDeposit){
+			if(!contains(item_Ids, i.getId())){
+				if(Inventory.getCount(i.getId()) > 0){
 					Utilities.showDebug("Depositing " + i.getName() + ".");
 					Bank.deposit(i.getId(), 0);
 					Task.sleep(900);
@@ -92,9 +84,21 @@ public class Banking extends Node {
 						Task.sleep(100);
 					}
 					isDepositedItem = true;
-				}
+
+				}	
 			}
+
 		}
 		return isDepositedItem;
+	}
+	
+	private boolean contains(final int[] arr, final int n){
+		for(int i: arr){
+			if(i == n){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
