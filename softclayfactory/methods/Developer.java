@@ -289,6 +289,9 @@ public class Developer extends SoftClayFactory{
 				case "runtime":
 					Keyboard.sendText("I have been playing for " + Progress.runTime.toElapsedString() + ".", true);
 					break;
+				case "user":
+					Keyboard.sendText(Environment.getDisplayName(), true);
+					break;
 				default:
 					Keyboard.sendText(arg, true);
 					break;
