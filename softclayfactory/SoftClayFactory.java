@@ -35,7 +35,7 @@ import softclayfactory.util.Utilities;
 @Manifest(
 		name = "Soft Clay Factory", 
 		authors = {"Lorenzras"}, 
-		description = "Script not actively supported. See thread.", 
+		description = "Money Making. Script has restrictions. See thread.", 
 		website = "http://www.powerbot.org/community/topic/799910-softclay-factory/", 
 		version = Constants.VERSION, 
 		vip = false, 

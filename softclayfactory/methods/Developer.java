@@ -156,7 +156,8 @@ public class Developer extends SoftClayFactory{
 			Utilities.showDebug("choosing restricted world.");
 			choosenWorld = Lobby.getWorld(restrictedWorld);
 		}
-
+		choosenWorld.click();
+		Utilities.showDebug("Choosen world number: " + choosenWorld.getNumber());
 		return choosenWorld;
 	}
 	
