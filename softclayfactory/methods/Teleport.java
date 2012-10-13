@@ -1,4 +1,4 @@
-package softclayfactory.util;
+package softclayfactory.methods;
 
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Tabs;
@@ -9,6 +9,7 @@ import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
 
 import softclayfactory.SoftClayFactory;
+import softclayfactory.util.Utilities;
 
 public class Teleport extends SoftClayFactory{
 	

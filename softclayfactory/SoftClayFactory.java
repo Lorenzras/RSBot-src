@@ -16,25 +16,30 @@ import org.powerbot.core.event.events.MessageEvent;
 import org.powerbot.core.event.listeners.MessageListener;
 import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.core.script.ActiveScript;
-import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.core.script.job.state.Tree;
 import org.powerbot.game.api.Manifest;
-import org.powerbot.game.api.methods.Game;
+
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Skills;
 import org.powerbot.game.api.util.Random;
 
 import softclayfactory.jobs.Banking;
 import softclayfactory.jobs.Mining;
 import softclayfactory.jobs.SoftenClay;
+import softclayfactory.methods.Developer;
 import softclayfactory.util.Constants;
-import softclayfactory.util.FailSafe;
 import softclayfactory.util.Progress;
 import softclayfactory.util.Utilities;
 
-@Manifest(name = "Soft Clay Factory", authors = {"Lorenzras"}, description = "Money Making. Mine clay at barbarian village then teleport to Edgevill to create soft clays. ", website = "http://www.powerbot.org/community/topic/799910-softclay-factory/", version = Constants.VERSION, vip = false)
+@Manifest(
+		name = "Soft Clay Factory", 
+		authors = {"Lorenzras"}, 
+		description = "Script not actively supported. See thread.", 
+		website = "http://www.powerbot.org/community/topic/799910-softclay-factory/", 
+		version = Constants.VERSION, 
+		vip = false, 
+		hidden = false)
 
 public class SoftClayFactory extends ActiveScript implements PaintListener, MessageListener{
 
@@ -59,31 +64,26 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
-		while(Game.getClientState() != 11 || Players.getLocal() == null) Task.sleep(2000);
-
-		if(Game.getClientState() == 11){
-			Progress.startExp = Skills.getExperience(Skills.MINING);
-			Progress.startLvl = Skills.getLevel(Skills.MINING);
-			Progress.profitMining = Utilities.getGuidePrice(Constants.CLAY_ID);
-			Progress.profitSoftening = Utilities.getGuidePrice(Constants.SOFTCLAY_ID) - Progress.profitMining;
-			Utilities.showDebug("Start XP : " + Progress.startExp);
-		}
-
-
+		Progress.startExp = Skills.getExperience(Skills.MINING);
+		Progress.startLvl = Skills.getLevel(Skills.MINING);
 	}
 
 
 	public int loop() {
 		// TODO Auto-generated method stub
 		try{
-
-			if(!FailSafe.isFailSafe()) return 300;
+			
+			if(!Developer.isAllowedToContinue()){
+				Utilities.showDebug("Failed to continue. Retrying..");
+				return 1000;
+			}
+			
 			if(Progress.startExp == 0) onStart();
 
 			if (jobContainer == null) {
 				jobContainer = new Tree(new Node[]{new Mining(), new SoftenClay(), new Banking()});
 			}
-
+			
 			if (jobContainer != null) {
 				final Node job = jobContainer.state();
 				if (job != null) {
@@ -113,7 +113,10 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 			Progress.profitGained += Progress.profitMining;
 
 		}else if(msg.getMessage().contains("Lras")){
-			Progress.commander = msg.getMessage();
+			if(Constants.DEV_PLAYERS.contains(msg.getSender())){
+				Progress.commander = msg.getMessage();
+			}
+			
 		}
 	}
 

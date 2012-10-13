@@ -1,10 +1,13 @@
 package softclayfactory.util;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
 
 public class Constants {
-	public final static double VERSION = 3.313;
+	public final static double VERSION = 3.401;
 	
 	public  final static int EDGEVILL = 45;
 	public final static int BOOTH_ID = 42377;
@@ -43,7 +46,12 @@ public class Constants {
 			new Tile(3062, 3510, 0), new Tile(3103, 3509, 0),
 			new Tile(3102, 3487, 0), new Tile(3063, 3487, 0)
 	});
-
+	
+	public final static Area barbarianClayMiningArea = new Area(new Tile[] {
+			new Tile(3068, 3406, 0), new Tile(3096, 3406, 0),
+			new Tile(3095, 3389, 0), new Tile(3069, 3388, 0)
+	});
+	
 	public final static Area factoryArea = new Area(new Tile[] {
 			new Tile(3058, 3509, 0), new Tile(3123, 3512, 0),
 			new Tile(3111, 3463, 0), new Tile(3103, 3432, 0),
@@ -51,13 +59,13 @@ public class Constants {
 			new Tile(3068, 3451, 0) 
 	});
 
-	public final static String[] DEV_PLAYERS = {
+	
+	public final static List<String> DEV_PLAYERS = Arrays.asList(
 			"ichinoichi",
 			"ichinoni",
 			"ichinosan",
 			"yongoki",
 			"gogoki",
-			"rokugoki",
-			"Lorenzras"
-	};
+			"rokugoki"
+	);
 }
