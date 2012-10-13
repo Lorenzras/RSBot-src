@@ -8,8 +8,9 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
 
+import core.Utilities;
+
 import softclayfactory.SoftClayFactory;
-import softclayfactory.util.Utilities;
 
 public class Teleport extends SoftClayFactory{
 	public  final static int EDGEVILL = 45;

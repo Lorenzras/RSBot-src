@@ -1,4 +1,4 @@
-package softclayfactory.util;
+package softclayfactory.variables;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
 
 public class Constants {
-	public final static double VERSION = 3.412;
+	public final static double VERSION = 4;
 	
 	
 	public final static int BOOTH_ID = 42377;
@@ -66,6 +66,7 @@ public class Constants {
 			"ichinosan",
 			"yongoki",
 			"gogoki",
-			"rokugoki"
+			"rokugoki",
+			"Lorenzras"
 	);
 }

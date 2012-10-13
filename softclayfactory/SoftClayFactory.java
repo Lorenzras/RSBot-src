@@ -24,18 +24,19 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.tab.Skills;
 import org.powerbot.game.api.util.Random;
 
+import core.Utilities;
+
 import softclayfactory.jobs.Banking;
 import softclayfactory.jobs.Mining;
 import softclayfactory.jobs.SoftenClay;
 import softclayfactory.methods.Developer;
-import softclayfactory.util.Constants;
-import softclayfactory.util.Progress;
-import softclayfactory.util.Utilities;
+import softclayfactory.variables.Constants;
+import softclayfactory.variables.Progress;
 
 @Manifest(
 		name = "Soft Clay Factory", 
 		authors = {"Lorenzras"}, 
-		description = "Money Making. Script has restrictions. See thread.", 
+		description = "Money Making. See first post in script thread for description and announcements.", 
 		website = "http://www.powerbot.org/community/topic/799910-softclay-factory/", 
 		version = Constants.VERSION, 
 		vip = false, 
@@ -43,7 +44,6 @@ import softclayfactory.util.Utilities;
 
 public class SoftClayFactory extends ActiveScript implements PaintListener, MessageListener{
 
-	public static String debug;
 	public static boolean isInitialized = false;
 	private final Image lenzras = Utilities.getImage("http://img96.imageshack.us/img96/8364/cursorb.png");
 
@@ -140,7 +140,7 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 
 
 		g.drawString("Time Running: " + Progress.runTime.toElapsedString(), 12 ,120);
-		g.drawString("Status: " + debug, 12 ,135);
+		g.drawString("Status: " + Utilities.getDebug(), 12 ,135);
 		g.drawString("XP/HR: " + Utilities.getPerHour(xpGained), 12 ,150);
 		g.drawString("XP Gained: " + xpGained, 12 ,165);
 		g.drawString("Mining Level: " + currLVL + "(+" + (currLVL - Progress.startLvl) + ")", 12 ,180);

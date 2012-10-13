@@ -11,9 +11,10 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 
-import softclayfactory.util.Constants;
-import softclayfactory.util.Progress;
-import softclayfactory.util.Utilities;
+import core.Utilities;
+
+import softclayfactory.variables.Constants;
+import softclayfactory.variables.Progress;
 
 public class Banking extends Node {
 

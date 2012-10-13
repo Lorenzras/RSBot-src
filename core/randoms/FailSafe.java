@@ -1,13 +1,38 @@
-package softclayfactory.methods;
+package core.randoms;
 
+import org.powerbot.core.randoms.Maze;
 import org.powerbot.core.script.job.Task;
+import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.Bank;
 
-import softclayfactory.util.Utilities;
+import core.Utilities;
+
 
 public class FailSafe {
+	public static boolean executeAll(){
+		try{
+			interfaceCloser();
+			disableFailedRandoms();
+			if(randomsHandler()) return false;
+		}catch(Exception e){
+			Utilities.showDebug("executeAll: " + e.getMessage());
+		}
+		
+		return true;
+	}
+	
+	private static void disableFailedRandoms(){
+		if(Environment.isRandomEnabled(Maze.class)){
+			Environment.enableRandom(Maze.class, false);
+		}
+		
+		
+	}
+	
+	
 	public static void interfaceCloser(){
 		if(Inventory.getCount(14664) > 0){
 			Utilities.showDebug("Dropping gift box.");
@@ -32,6 +57,12 @@ public class FailSafe {
 			if(Bank.isOpen()) Bank.close();
 			Widgets.get(205, 62).interact("close");
 		}
+		
+		if(Widgets.get(1184,13).validate()){
+			Utilities.showDebug("Mysterious old man");
+			Keyboard.sendKey(' ');
+			Task.sleep(3000);
+		}
 
 		if(Widgets.get(1253, 175).validate()){
 			Utilities.showDebug("SOF Interface closer.");
@@ -51,5 +82,14 @@ public class FailSafe {
 			}
 
 		}
+	}
+	
+	public static boolean randomsHandler(){
+		if(Maze_.isTrapped()){
+			Maze_.solve();
+			return true;
+		}
+		
+		return false;
 	}
 }

@@ -1,4 +1,4 @@
-package softclayfactory.util;
+package core;
 
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -9,12 +9,12 @@ import java.text.NumberFormat;
 
 import javax.imageio.ImageIO;
 
-import softclayfactory.SoftClayFactory;
+import softclayfactory.variables.Progress;
 
 
 
-public class Utilities extends SoftClayFactory{
-	
+public class Utilities{
+	private static String debug = "";
 
 	public static String getPerHour(long arg){
 		return NumberFormat.getIntegerInstance().format(arg *3600000D / (Progress.runTime.getElapsed()));
@@ -24,7 +24,10 @@ public class Utilities extends SoftClayFactory{
 		try { return ImageIO.read(new URL(url)); } 
 		catch(IOException e) { return null; }
 	}
-
+	
+	public static String getDebug(){
+		return debug;
+	}
 	public static void showDebug(String Status){
 		System.out.println(Status);
 		debug = Status;

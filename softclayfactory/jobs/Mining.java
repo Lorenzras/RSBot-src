@@ -19,10 +19,11 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 
-import softclayfactory.util.Constants;
+import core.Utilities;
 
-import softclayfactory.util.Progress;
-import softclayfactory.util.Utilities;
+
+import softclayfactory.variables.Constants;
+import softclayfactory.variables.Progress;
 
 public class Mining extends Node{
 	private final int[] clayRocks = {10579, 10577, 10578};

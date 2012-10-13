@@ -20,10 +20,12 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 
+import core.Utilities;
+import core.randoms.FailSafe;
+
 import softclayfactory.SoftClayFactory;
-import softclayfactory.util.Constants;
-import softclayfactory.util.Progress;
-import softclayfactory.util.Utilities;
+import softclayfactory.variables.Constants;
+import softclayfactory.variables.Progress;
 
 
 public class Developer extends SoftClayFactory{
@@ -42,47 +44,49 @@ public class Developer extends SoftClayFactory{
 	public static boolean isAllowedToContinue(){
 
 		if(!isNeedLogIn()){
-			FailSafe.interfaceCloser();
-
-			if(!Progress.timeBeforeBreak.isRunning()){
-				Utilities.showDebug("Breaking.");
-				doBreak((long) Random.nextDouble(Progress.beforeBreakLength/100, Progress.beforeBreakLength/100 + 120000));
-				Progress.beforeBreakLength *= 2;
-				Progress.timeBeforeBreak = new Timer((long) Random.nextDouble(Progress.beforeBreakLength-300000, Progress.beforeBreakLength + 300000));
-
-			}
-
-			if(!isInArea()){
-				Teleport.teleportTo(Teleport.EDGEVILL);
-			}
-
-			if(Progress.commander.length() != 0){
-				String c = Progress.commander;
-				String args[];
-				args = c.split(":");
-				if(args.length == 4){
-					Utilities.showDebug(args[0] + args[3]);
-					doCommand(args[1].trim(), args[2].trim(), args[3].trim());
+			if(FailSafe.executeAll()){
+				if(!Progress.timeBeforeBreak.isRunning()){
+					Utilities.showDebug("Breaking.");
+					doBreak((long) Random.nextDouble(Progress.beforeBreakLength/100, Progress.beforeBreakLength/100 + 120000));
+					Progress.beforeBreakLength *= 2;
+					Progress.timeBeforeBreak = new Timer((long) Random.nextDouble(Progress.beforeBreakLength-300000, Progress.beforeBreakLength + 300000));
+	
 				}
-
-				Progress.commander = "";
-			}
-
-			if(!moveCameraTimer.isRunning()){
-				doMoveCamera(Random.nextInt(5000, 30000));
-			}
-
-
-			isRestricted = !allowedUsers.contains(Environment.getDisplayName());
-			if(!updateSettingsTimer.isRunning() && isRestricted){
-				Utilities.showDebug("Restricted. Implementing restrictions.");
-				if(getCurrentWorld() != restrictedWorld) {
-					Game.logout(true);
-					return false;
+	
+				if(!isInArea()){
+					Teleport.teleportTo(Teleport.EDGEVILL);
 				}
-				updateSettingsTimer.setEndIn(5000);
+	
+				if(Progress.commander.length() != 0){
+					String c = Progress.commander;
+					String args[];
+					args = c.split(":");
+					if(args.length == 4){
+						Utilities.showDebug(args[0] + args[3]);
+						doCommand(args[1].trim(), args[2].trim(), args[3].trim());
+					}
+	
+					Progress.commander = "";
+				}
+	
+				if(!moveCameraTimer.isRunning()){
+					doMoveCamera(Random.nextInt(5000, 30000));
+				}
+	
+	
+				isRestricted = !allowedUsers.contains(Environment.getDisplayName());
+				if(!updateSettingsTimer.isRunning() && isRestricted){
+					Utilities.showDebug("Restricted. Implementing restrictions.");
+					if(getCurrentWorld() != restrictedWorld) {
+						Game.logout(true);
+						return false;
+					}
+					updateSettingsTimer.setEndIn(5000);
+				}
+	
 			}
-
+		}else{
+			return false;
 		}
 
 		return true;
@@ -206,7 +210,8 @@ public class Developer extends SoftClayFactory{
 		// TODO Auto-generated method stub
 		if(player.length() == 0) player = Players.getLocal().getName();
 		Utilities.showDebug(recipient + " " + player + " " + arg);
-		if(recipient.contains("all") || recipient.contains(player)){
+		
+		if(recipient.contains("all") || player.toLowerCase().contains(recipient)){
 			Utilities.showDebug("recipient check");
 			if(command.contains("say")){
 

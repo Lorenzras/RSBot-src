@@ -1,8 +1,11 @@
-package softclayfactory.util;
+package softclayfactory.variables;
 
 
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
+
+import core.Utilities;
+
 
 public class Progress {
 	public static int startExp;

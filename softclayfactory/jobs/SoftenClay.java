@@ -13,10 +13,11 @@ import org.powerbot.game.api.methods.widget.Bank;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 
+import core.Utilities;
+
 import softclayfactory.methods.Teleport;
-import softclayfactory.util.Constants;
-import softclayfactory.util.Progress;
-import softclayfactory.util.Utilities;
+import softclayfactory.variables.Constants;
+import softclayfactory.variables.Progress;
 
 public class SoftenClay extends Node{
 	
