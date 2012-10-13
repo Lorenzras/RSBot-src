@@ -11,8 +11,8 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 
-import core.Utilities;
 
+import softclayfactory.core.Utilities;
 import softclayfactory.variables.Constants;
 import softclayfactory.variables.Progress;
 

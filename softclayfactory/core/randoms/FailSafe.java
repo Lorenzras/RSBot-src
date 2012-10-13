@@ -1,4 +1,4 @@
-package core.randoms;
+package softclayfactory.core.randoms;
 
 import org.powerbot.core.randoms.Maze;
 import org.powerbot.core.script.job.Task;
@@ -8,7 +8,9 @@ import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.Bank;
 
-import core.Utilities;
+
+import softclayfactory.core.Utilities;
+
 
 
 public class FailSafe {

@@ -20,10 +20,10 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 
-import core.Utilities;
-import core.randoms.FailSafe;
 
 import softclayfactory.SoftClayFactory;
+import softclayfactory.core.Utilities;
+import softclayfactory.core.randoms.FailSafe;
 import softclayfactory.variables.Constants;
 import softclayfactory.variables.Progress;
 

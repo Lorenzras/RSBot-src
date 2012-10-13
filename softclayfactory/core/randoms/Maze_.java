@@ -1,4 +1,4 @@
-package core.randoms;
+package softclayfactory.core.randoms;
 
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Widgets;
@@ -9,7 +9,8 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 
-import core.Utilities;
+import softclayfactory.core.Utilities;
+
 
 
 public class Maze_ {

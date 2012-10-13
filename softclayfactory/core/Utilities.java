@@ -1,4 +1,4 @@
-package core;
+package softclayfactory.core;
 
 import java.awt.Image;
 import java.io.BufferedReader;

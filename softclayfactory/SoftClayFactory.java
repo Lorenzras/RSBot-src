@@ -24,8 +24,8 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.tab.Skills;
 import org.powerbot.game.api.util.Random;
 
-import core.Utilities;
 
+import softclayfactory.core.Utilities;
 import softclayfactory.jobs.Banking;
 import softclayfactory.jobs.Mining;
 import softclayfactory.jobs.SoftenClay;
