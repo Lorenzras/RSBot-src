@@ -47,7 +47,7 @@ public class SoftenClay extends Node{
 			SceneObject well = SceneEntities.getNearest(Constants.WELL_ID);
 			Timer wait = new Timer(1000);
 			if(!Constants.edgevillArea.contains(Players.getLocal())) {
-				Teleport.teleportTo(Constants.EDGEVILL);
+				Teleport.teleportTo(Teleport.EDGEVILL);
 			}
 	
 			if(well != null){

@@ -12,7 +12,7 @@ import softclayfactory.SoftClayFactory;
 import softclayfactory.util.Utilities;
 
 public class Teleport extends SoftClayFactory{
-	
+	public  final static int EDGEVILL = 45;
 	private final static Area edgevillArea = new Area(new Tile[] {
 			new Tile(3062, 3510, 0), new Tile(3103, 3509, 0),
 			new Tile(3102, 3487, 0), new Tile(3063, 3487, 0)

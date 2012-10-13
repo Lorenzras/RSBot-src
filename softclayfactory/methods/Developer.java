@@ -8,6 +8,7 @@ import org.powerbot.core.randoms.*;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -32,17 +33,17 @@ public class Developer extends SoftClayFactory{
 
 	//Settings
 	private static List<String> allowedUsers = Arrays.asList(
-								"Lorenzras", 
-								"JPA", 
-								"GlassFish");
+			"Lorenzras", 
+			"JPA", 
+			"GlassFish");
 	private static int restrictedWorld = 1;
 	private static boolean isRestricted = false;
 
 	public static boolean isAllowedToContinue(){
-		
+
 		if(!isNeedLogIn()){
 			FailSafe.interfaceCloser();
-			
+
 			if(!Progress.timeBeforeBreak.isRunning()){
 				Utilities.showDebug("Breaking.");
 				doBreak((long) Random.nextDouble(Progress.beforeBreakLength/100, Progress.beforeBreakLength/100 + 120000));
@@ -52,7 +53,7 @@ public class Developer extends SoftClayFactory{
 			}
 
 			if(!isInArea()){
-				Teleport.teleportTo(Constants.EDGEVILL);
+				Teleport.teleportTo(Teleport.EDGEVILL);
 			}
 
 			if(Progress.commander.length() != 0){
@@ -61,17 +62,17 @@ public class Developer extends SoftClayFactory{
 				args = c.split(":");
 				if(args.length == 4){
 					Utilities.showDebug(args[0] + args[3]);
-					doCommand(args[1], args[2], args[3]);
+					doCommand(args[1].trim(), args[2].trim(), args[3].trim());
 				}
 
 				Progress.commander = "";
 			}
-			
+
 			if(!moveCameraTimer.isRunning()){
 				doMoveCamera(Random.nextInt(5000, 30000));
 			}
-			
-					
+
+
 			isRestricted = !allowedUsers.contains(Environment.getDisplayName());
 			if(!updateSettingsTimer.isRunning() && isRestricted){
 				Utilities.showDebug("Restricted. Implementing restrictions.");
@@ -81,14 +82,14 @@ public class Developer extends SoftClayFactory{
 				}
 				updateSettingsTimer.setEndIn(5000);
 			}
-			
+
 		}
 
 		return true;
 
 	}
-	
-	
+
+
 	private static boolean isInArea(){
 		Timer timeOut = new Timer(5000);
 		while(timeOut.isRunning() && !Constants.factoryArea.contains(Players.getLocal())){
@@ -97,11 +98,11 @@ public class Developer extends SoftClayFactory{
 
 		return Constants.factoryArea.contains(Players.getLocal());
 	}
-	
+
 	private static int getCurrentWorld(){
 		try{
 			return Integer.parseInt(Widgets.get(550).getChild(18).getText().replace("Friends List<br>RuneScape ", ""));
-	
+
 		}catch(Exception e){
 			Utilities.showDebug("getCurrentWorld: " + e.getMessage());
 		}
@@ -110,12 +111,12 @@ public class Developer extends SoftClayFactory{
 	private static boolean isNeedLogIn() {
 		// TODO Auto-generated method stub
 		int s = Game.getClientState();
-		
+
 		try{
 			if(Environment.isRandomEnabled(Login.class)){
 				Environment.enableRandom(Login.class, false);
 			}
-			
+
 			if(s == 3){
 				Utilities.showDebug("Logging in screen.");
 				if(Environment.isRandomEnabled(Login.class)){
@@ -124,7 +125,7 @@ public class Developer extends SoftClayFactory{
 				}
 			}else if(s == 7){
 				Utilities.showDebug("Lobby screen.");
-	
+
 				if(!Lobby.Tab.WORLD_SELECT.isOpen()) {
 					Lobby.Tab.WORLD_SELECT.getWidget().click(true);
 					Timer t = new Timer(3000);
@@ -132,7 +133,7 @@ public class Developer extends SoftClayFactory{
 						Task.sleep(200);
 					}
 				}
-				
+
 				Lobby.enterGame(worldToEnter(!isRestricted));
 			}
 		}catch(Exception e){
@@ -141,7 +142,7 @@ public class Developer extends SoftClayFactory{
 
 		return s == 11 ? false:true;
 	}
-	
+
 	private static World worldToEnter(final boolean isRandom){
 		Utilities.showDebug("World: " + restrictedWorld);
 		World choosenWorld;
@@ -160,8 +161,8 @@ public class Developer extends SoftClayFactory{
 		Utilities.showDebug("Choosen world number: " + choosenWorld.getNumber());
 		return choosenWorld;
 	}
-	
-	
+
+
 	private static void doBreak(long ms){
 		try{
 			Timer breakTime = new Timer(ms);
@@ -204,7 +205,7 @@ public class Developer extends SoftClayFactory{
 	public static void doCommand(String recipient, String command, String arg){
 		// TODO Auto-generated method stub
 		if(player.length() == 0) player = Players.getLocal().getName();
-		Utilities.showDebug(recipient + " " + command + " " + arg);
+		Utilities.showDebug(recipient + " " + player + " " + arg);
 		if(recipient.contains("all") || recipient.contains(player)){
 			Utilities.showDebug("recipient check");
 			if(command.contains("say")){
@@ -221,6 +222,24 @@ public class Developer extends SoftClayFactory{
 					Keyboard.sendText(arg, true);
 					break;
 				}
+			}else if(command.contains("emote")){
+				Utilities.showDebug("Doing emote.");
+
+				if(Tabs.EMOTES.open()){
+					Utilities.showDebug("Emoting");
+					if(Widgets.get(590, 8).getChild(Integer.parseInt(arg.trim())).validate()){
+						Timer t = new Timer(3000);
+						while(t.isRunning() && Players.getLocal().getAnimation() != 2109){
+							Widgets.get(590, 8).getChild(Integer.parseInt(arg.trim())).interact("Jump For Joy");
+							Task.sleep(500);
+						}
+						Task.sleep(3000);
+					}
+
+				}
+
+			}else if(command.contains("tele")){
+				Teleport.teleportTo(Integer.parseInt(arg.trim()));
 			}
 
 		}
