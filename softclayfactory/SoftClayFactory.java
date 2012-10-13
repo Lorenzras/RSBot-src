@@ -44,7 +44,6 @@ import softclayfactory.variables.Progress;
 
 public class SoftClayFactory extends ActiveScript implements PaintListener, MessageListener{
 
-	public static boolean isInitialized = false;
 	private final Image lenzras = Utilities.getImage("http://img96.imageshack.us/img96/8364/cursorb.png");
 
 
