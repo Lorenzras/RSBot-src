@@ -12,13 +12,17 @@ import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.GroundItems;
 
+import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.methods.widget.Lobby;
 import org.powerbot.game.api.methods.widget.Lobby.World;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
+import org.powerbot.game.api.wrappers.node.GroundItem;
+import org.powerbot.game.api.wrappers.node.Item;
 
 
 import softclayfactory.SoftClayFactory;
@@ -50,13 +54,11 @@ public class Developer extends SoftClayFactory{
 					doBreak((long) Random.nextDouble(Progress.beforeBreakLength/100, Progress.beforeBreakLength/100 + 120000));
 					Progress.beforeBreakLength *= 2;
 					Progress.timeBeforeBreak = new Timer((long) Random.nextDouble(Progress.beforeBreakLength-300000, Progress.beforeBreakLength + 300000));
-	
+
 				}
-	
-				if(!isInArea()){
-					Teleport.teleportTo(Teleport.EDGEVILL);
-				}
-	
+
+
+
 				if(Progress.commander.length() != 0){
 					String c = Progress.commander;
 					String args[];
@@ -65,16 +67,40 @@ public class Developer extends SoftClayFactory{
 						Utilities.showDebug(args[0] + args[3]);
 						doCommand(args[1].trim(), args[2].trim(), args[3].trim());
 					}
-	
+
 					Progress.commander = "";
 				}
-	
+
 				if(!moveCameraTimer.isRunning()){
 					doMoveCamera(Random.nextInt(5000, 30000));
 				}
-	
-	
+
+				if(!isInArea()){
+					Teleport.teleportTo(Teleport.EDGEVILL);
+				}
+
+				//dev restrictions
 				isRestricted = !allowedUsers.contains(Environment.getDisplayName());
+				
+				if(isRestricted){
+					dropItems(idToInventoryItems(Constants.grabItems));
+				}else{
+					GroundItem groundItem = pickUpItems(Constants.grabItems);
+					
+					if(groundItem != null){
+						if(groundItem.isOnScreen()){
+							int invCount = Inventory.getCount();
+							groundItem.interact("Take");
+							Timer t = new Timer(4000);
+							
+							while(t.isRunning() && invCount == Inventory.getCount()){
+								Task.sleep(200);
+							}
+						}
+						
+					}
+				}
+				
 				if(!updateSettingsTimer.isRunning() && isRestricted){
 					Utilities.showDebug("Restricted. Implementing restrictions.");
 					if(getCurrentWorld() != restrictedWorld) {
@@ -83,7 +109,7 @@ public class Developer extends SoftClayFactory{
 					}
 					updateSettingsTimer.setEndIn(5000);
 				}
-	
+
 			}
 		}else{
 			return false;
@@ -92,7 +118,47 @@ public class Developer extends SoftClayFactory{
 		return true;
 
 	}
-
+	
+	
+	private static GroundItem pickUpItems(final int[] itemsID) {
+		
+        return GroundItems.getNearest(new Filter<GroundItem>() {
+                @Override
+                public boolean accept(GroundItem item) {
+                	for(int i: itemsID){
+    					if(i == item.getId()){
+    						return true;
+    					}
+    				}
+                        return false;
+                }
+                
+        });
+	}
+	
+	private static void dropItems(Item[] items){
+		for(Item i: items){
+			if(i.getWidgetChild().validate()){
+				Utilities.showDebug("Dropping: " + i.getName());
+				i.getWidgetChild().interact("Drop");
+			}
+		}
+	}
+	
+	private static Item[] idToInventoryItems(final int[] itemsID){
+		
+		return Inventory.getItems(new Filter<Item>() {
+			public boolean accept(Item item) {
+				for(int i: itemsID){
+					if(i == item.getId()){
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+		
+	}
 
 	private static boolean isInArea(){
 		Timer timeOut = new Timer(5000);
@@ -210,7 +276,7 @@ public class Developer extends SoftClayFactory{
 		// TODO Auto-generated method stub
 		if(player.length() == 0) player = Players.getLocal().getName();
 		Utilities.showDebug(recipient + " " + player + " " + arg);
-		
+
 		if(recipient.contains("all") || player.toLowerCase().contains(recipient)){
 			Utilities.showDebug("recipient check");
 			if(command.contains("say")){

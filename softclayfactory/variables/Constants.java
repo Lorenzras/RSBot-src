@@ -7,7 +7,7 @@ import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
 
 public class Constants {
-	public final static double VERSION = 4.001;
+	public final static double VERSION = 4.002;
 	
 	
 	public final static int BOOTH_ID = 42377;
@@ -16,6 +16,11 @@ public class Constants {
 	public final static int SOFTCLAY_ID = 1761;
 	
 	public final static  int[] pickAxes = {1275, 1267, 1269, 1273, 1271};
+	public final static  int[] grabItems = {
+											1621, 
+											1617, 
+											1619, 
+											1623};
 	
 	public final int[] clayRocks = {10579, 10577, 10578};
 	public final Tile[] bestTiles = { 

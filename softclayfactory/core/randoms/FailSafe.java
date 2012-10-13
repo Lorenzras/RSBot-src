@@ -35,6 +35,7 @@ public class FailSafe {
 	}
 	
 	
+	
 	public static void interfaceCloser(){
 		if(Inventory.getCount(14664) > 0){
 			Utilities.showDebug("Dropping gift box.");

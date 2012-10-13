@@ -67,8 +67,9 @@ public class Mining extends Node{
 								if(isSomeoneOnTile(Players.getLocal().getLocation())){
 									Utilities.showDebug("Competing to mine a rock");
 									int invCount = Inventory.getCount();
+									Timer t = new Timer(10000);
 									Tile tileToSpamClick = clayRock.getLocation();
-									while(invCount == Inventory.getCount() && !Players.getLocal().isMoving()){
+									while(t.isRunning() && invCount == Inventory.getCount() && !Players.getLocal().isMoving()){
 										doInteract(SceneEntities.getAt(tileToSpamClick));
 										Task.sleep(100, 400);
 									}
