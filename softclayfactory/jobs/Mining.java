@@ -52,7 +52,7 @@ public class Mining extends Node{
 			if(Constants.barbarianClayMiningArea.contains(Players.getLocal())){
 				clayRock = SceneEntities.getNearest(clayRocks);
 				if(clayRock != null){
-					if(clayRock.isOnScreen() && clayRock.getLocation().distance(Players.getLocal()) < 5){
+					if(clayRock.isOnScreen()){
 						boolean didWalk = false;
 						Utilities.showDebug("Time to move to better tile: " + patienceTimer.toRemainingString());
 						if(!patienceTimer.isRunning() || !Arrays.asList(bestTiles).contains(Players.getLocal().getLocation())){
@@ -87,15 +87,11 @@ public class Mining extends Node{
 						}
 
 
-
 					}else{
-						Utilities.showDebug("Walking to clay rock.");
-						Walking.walk(Walking.findPath(clayRock).getEnd());
-
-						Task.sleep(900, 1600);
+						Utilities.showDebug("Found clay but not on screen. Searching...");
 					}
 				}else{
-					Utilities.showDebug("Did not find clay.");
+					Utilities.showDebug("Did not find clay. Searching...");
 				}
 			}else{
 
