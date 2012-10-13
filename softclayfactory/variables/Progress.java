@@ -4,8 +4,6 @@ package softclayfactory.variables;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 
-import core.Utilities;
-
 
 public class Progress {
 	public static int startExp;
@@ -14,8 +12,8 @@ public class Progress {
 	public static String commander = "";
 	public static int productsMade;
 	public static int profitGained; 
-	public static int profitMining = Utilities.getGuidePrice(Constants.CLAY_ID);
-	public static int profitSoftening = Utilities.getGuidePrice(Constants.SOFTCLAY_ID) - Progress.profitMining;
+	public static int profitMining; 
+	public static int profitSoftening;
 	
 	public static int softclaysInBank = 0;
 	public static long beforeBreakLength = 18000000;

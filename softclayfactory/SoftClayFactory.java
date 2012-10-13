@@ -65,6 +65,8 @@ public class SoftClayFactory extends ActiveScript implements PaintListener, Mess
 		// TODO Auto-generated method stub
 		Progress.startExp = Skills.getExperience(Skills.MINING);
 		Progress.startLvl = Skills.getLevel(Skills.MINING);
+		Progress.profitMining = Utilities.getGuidePrice(Constants.CLAY_ID);
+		Progress.profitSoftening = Utilities.getGuidePrice(Constants.SOFTCLAY_ID) - Progress.profitMining;
 		
 	}
 
