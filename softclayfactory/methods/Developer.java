@@ -36,12 +36,19 @@ public class Developer extends SoftClayFactory{
 	private static Timer moveCameraTimer = new Timer(5000);
 	private static Timer updateSettingsTimer = new Timer(5000);
 	private static String player = "";
-
+	
 	//Settings
 	private static List<String> allowedUsers = Arrays.asList(
 			"Lorenzras", 
-			"JPA", 
-			"GlassFish");
+			//expires on 201217 12:00
+			 "p90x",
+			 "ItsAboutDamnTime",
+			 "DrMoose",
+			 "Gaming",
+			 "ItsAboutDamnTime",
+			 "shootshootshoot65"
+			 
+			);
 	private static int restrictedWorld = 1;
 	private static boolean isRestricted = false;
 

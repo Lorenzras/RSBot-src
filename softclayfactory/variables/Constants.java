@@ -27,6 +27,7 @@ public class Constants {
 			new Tile(3083, 3399, 0),
 			new Tile(3082, 3400, 0),
 			new Tile(3081, 3399, 0)};
+	
 
 	public final static Tile[] clayPath = {
 			new Tile(3067, 3505, 0), new Tile(3072, 3504, 0),

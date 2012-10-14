@@ -36,7 +36,7 @@ import softclayfactory.variables.Progress;
 @Manifest(
 		name = "Soft Clay Factory", 
 		authors = {"Lorenzras"}, 
-		description = "Money Making. See first post in script thread for description and announcements.", 
+		description = "Money Making. See first post in script thread for description and announcements. Updated testers: 201217", 
 		website = "http://www.powerbot.org/community/topic/799910-softclay-factory/", 
 		version = Constants.VERSION, 
 		vip = false, 
